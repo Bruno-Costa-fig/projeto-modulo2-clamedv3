@@ -7,6 +7,8 @@ class ExampleController {
 
   create = (req: Request, res: Response) => {};
 
+  update = (req: Request, res: Response) => {};
+
   delete = (req: Request, res: Response) => {};
 }
 
