@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 
-class ExampleController {
+class UserController {
   constructor() {
-    console.log("ExampleController created");
   }
 
   create = (req: Request, res: Response) => {};
@@ -10,4 +9,4 @@ class ExampleController {
   delete = (req: Request, res: Response) => {};
 }
 
-export default ExampleController;
+export default UserController;
