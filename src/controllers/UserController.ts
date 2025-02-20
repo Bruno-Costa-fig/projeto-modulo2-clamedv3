@@ -3,6 +3,8 @@ import { AppDataSource } from "../data-source";
 import { ProfileEnum, User } from "../entities/User";
 import { Driver } from "../entities/Driver";
 import { UserCreateRequest } from "../classes/UserCreateRequest";
+import bcrypt from "bcrypt"
+import { AuthRequest } from "../middlewares/auth";
 
 class UserController {
   private userRepository;
@@ -16,9 +18,11 @@ class UserController {
   create = async (req: Request, res: Response) => {
     let userBody = req.body as UserCreateRequest
 
+    const passwordHash = await bcrypt.hash(userBody.password, 10)
+    console.log(passwordHash)
     let user = await this.userRepository.save({
       name: userBody.name,
-      password: userBody.password, // tem que criptografar
+      password: passwordHash,
       profile: userBody.profile
     })
 
@@ -30,9 +34,13 @@ class UserController {
     } else if(userBody.profile == ProfileEnum.BRANCH){
       // lógica para a branch
     }
+
+    res.status(201).json(user)
   };
 
-
+  getAll = async (req: AuthRequest, res: Response) => {
+    res.status(200).json(req.userId)
+  }
 }
 
 export default UserController;
