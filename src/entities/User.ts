@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm"
+import {Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm"
 import { Driver } from "./Driver"
 
 export enum ProfileEnum {
@@ -15,12 +15,12 @@ export class User {
   @Column({length: 255, nullable: false})
   name: string
 
-  @Column({length: 20, nullable: false})
+  @Column({length: 150, nullable: false})
   password: string
 
   @Column({ type: "enum", nullable: false, enum: ProfileEnum })
   profile: ProfileEnum
 
-  @ManyToOne(() => Driver, (driver) => driver.user_id)
-  driver: Driver[]
+  @OneToOne(() => Driver, (driver) => driver.user_id)
+  driver: Driver
 }

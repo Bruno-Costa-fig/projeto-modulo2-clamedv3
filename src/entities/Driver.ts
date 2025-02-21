@@ -9,6 +9,6 @@ export class Driver {
     @Column({length: 20})
     document: string
 
-    @OneToMany(() => User, (user) => user.driver)
+    @OneToOne(() => User, (user) => user.driver)
     user_id: number
 }
