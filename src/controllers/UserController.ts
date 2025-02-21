@@ -38,8 +38,38 @@ class UserController {
     res.status(201).json(user)
   };
 
-  getAll = async (req: AuthRequest, res: Response) => {
-    res.status(200).json(req.userId)
+  getAll = async (req: Request, res: Response) => {
+
+    let profile = req.query.profile as string
+
+    if(!!profile && profile != "ADMIN" && profile != "DRIVER" && profile != "BRANCH"){
+      res.status(400).json("Valor inválido para a query 'profile'")
+      return
+    }
+
+    let users = [] as User[]
+
+    if(!!profile){
+      users = await this.userRepository.find({where: {profile: profile as any as ProfileEnum}})
+    } else {
+      users = await this.userRepository.find()
+    }
+    res.status(200).json(users)
+  }
+
+  getById = async (req: Request, res: Response) => {
+
+    const id = Number(req.params.id)
+
+    const request = req as AuthRequest
+
+    if(request.profile == "ADMIN" || (request.profile == "DRIVER" && Number(request.userId) == id)){
+      let user = await this.userRepository.findOneBy({id: id})
+      res.status(200).json(user)
+      return
+    }
+
+    res.status(401).json("Você não tem permissão para acessar este recurso!")
   }
 }
 
