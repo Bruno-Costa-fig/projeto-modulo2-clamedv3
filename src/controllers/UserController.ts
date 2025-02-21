@@ -61,9 +61,7 @@ class UserController {
 
     const id = Number(req.params.id)
 
-    const request = req as AuthRequest
-
-    if(request.profile == "ADMIN" || (request.profile == "DRIVER" && Number(request.userId) == id)){
+    if(req.profile == "ADMIN" || (req.profile == "DRIVER" && Number(req.userId) == id)){
       let user = await this.userRepository.findOneBy({id: id})
       res.status(200).json(user)
       return
